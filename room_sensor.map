@@ -1,0 +1,13 @@
+# Danh mục cấu hình sensor hợp lệ (room_sensor.map)
+# Cấu trúc: <room> <sensor_id> <type>
+# Các loại: temperature, humidity, motion, door, smoke_gas
+
+# room sensor_id type
+501 10 temperature
+501 21 humidity
+602 30 motion
+703 40 door
+804 50 smoke_gas
+905 11 temperature
+905 22 humidity
+
