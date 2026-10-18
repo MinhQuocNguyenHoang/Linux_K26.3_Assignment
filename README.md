@@ -193,7 +193,9 @@ c:\Users\Asus\Documents\Assignment_dev_linux/
   - `bool read_by_storage`: Đánh dấu Storage Manager đã đọc phần tử này.
 - **Cơ chế thu hồi (Purge):**
   Một nút **CHỈ** được gỡ khỏi danh sách và giải phóng bộ nhớ (`free(node)`) khi:
-  $$\text{read\_by\_data} == \text{true} \quad \land \quad \text{read\_by\_storage} == \text{true}$$
+  ```c
+  (node->read_by_data == true) && (node->read_by_storage == true)
+  ```
   Do mỗi luồng đọc tiến hành tuần tự theo thứ tự FIFO từ đầu danh sách chưa đọc của mình, nút đầu hàng đợi (`sbuf->head`) sẽ được giải phóng ngay khi luồng đọc chậm hơn hoàn thành đọc nút đó. Hàm `sbuffer_purge_read_nodes` kiểm tra và dọn dẹp các nút đã thỏa mãn cả hai cờ một cách triệt để.
 - **Đồng bộ hóa không bận (No Busy-Polling):**
   - Sử dụng `pthread_cond_t not_empty` kết hợp với `pthread_mutex_t lock`.
@@ -208,13 +210,13 @@ c:\Users\Asus\Documents\Assignment_dev_linux/
 
 | Giao thức | Cảm biến | Cổng | Phân khung | Mã hóa | Phản hồi | Đặc điểm kỹ thuật |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **TBP** | Nhiệt độ | $P$ | Cố định 18 byte | Nhị phân, Little-Endian | Không | Gọn nhẹ; float 64-bit IEEE 754 giải mã qua `uint64_t` và `memcpy`. |
-| **HLP** | Độ ẩm | $P+1$ | Kết thúc `\n` (max 64B) | ASCII text | Không | Cú pháp `HUM <id> <value> <ts>\n`, dễ kiểm thử bằng `netcat`. |
-| **EVP** | Chuyển động, Cửa | $P+2$ | TLV (Type-Length-Value) | Nhị phân, Big-Endian | Không | Giao thức sự kiện; Type 0x01 (Motion, 8B), Type 0x02 (Door, 9B). |
-| **SGP** | Khói / Gas | $P+3$ | Cố định 11 byte | Nhị phân, Big-Endian, CRC-16 | ACK/NAK | Khung bắt đầu bằng Magic `0x7E`. Kiểm tra CRC-16/CCITT-FALSE 8 byte payload. Phản hồi 1 byte: ACK (`0x06`) hoặc NAK (`0x15`). |
+| **TBP** | Nhiệt độ | P | Cố định 18 byte | Nhị phân, Little-Endian | Không | Gọn nhẹ; float 64-bit IEEE 754 giải mã qua `uint64_t` và `memcpy`. |
+| **HLP** | Độ ẩm | P+1 | Kết thúc `\n` (max 64B) | ASCII text | Không | Cú pháp `HUM <id> <value> <ts>\n`, dễ kiểm thử bằng `netcat`. |
+| **EVP** | Chuyển động, Cửa | P+2 | TLV (Type-Length-Value) | Nhị phân, Big-Endian | Không | Giao thức sự kiện; Type 0x01 (Motion, 8B), Type 0x02 (Door, 9B). |
+| **SGP** | Khói / Gas | P+3 | Cố định 11 byte | Nhị phân, Big-Endian, CRC-16 | ACK/NAK | Khung bắt đầu bằng Magic `0x7E`. Kiểm tra CRC-16/CCITT-FALSE 8 byte payload. Phản hồi 1 byte: ACK (`0x06`) hoặc NAK (`0x15`). |
 
 #### Thuật Toán CRC-16/CCITT-FALSE
-- Đa thức sinh: $x^{16} + x^{12} + x^5 + 1$ (giá trị hex: `0x1021`)
+- Đa thức sinh: x¹⁶ + x¹² + x⁵ + 1 (giá trị hex: `0x1021`)
 - Giá trị khởi tạo: `0xFFFF`
 - Không đảo bit đầu vào và đầu ra (`RefIn = false`, `RefOut = false`), `XorOut = 0x0000`.
 - Vector kiểm tra chuẩn: chuỗi ASCII `"123456789"` sinh ra mã `0x29B1`.
@@ -224,7 +226,7 @@ c:\Users\Asus\Documents\Assignment_dev_linux/
 
 ### 4.3 Connection Manager (Non-blocking I/O với `poll()`)
 - Sử dụng lời gọi hệ thống `poll()` để giám sát đồng thời:
-  - 04 listening socket cho 4 cổng $P .. P+3$.
+  - 04 listening socket cho 4 cổng P .. P+3.
   - Tối đa `MAX_CONN = 64` socket kết nối từ các sensor node.
 - **Giải quyết phân mảnh (TCP Fragmentation) & dính gói (TCP Glueing):**
   - Mỗi kết nối có một bộ đệm riêng `rx[RX_BUF_SIZE]`.
@@ -248,10 +250,10 @@ c:\Users\Asus\Documents\Assignment_dev_linux/
     `Received sensor data with invalid sensor node ID <node-ID>`
 - **Xử lý theo từng loại cảm biến (Bảng Handler Table):**
   - **Nhiệt độ (Type 1) & Độ ẩm (Type 2):** Sử dụng mảng xoay vòng (*Circular Buffer*) có độ dài `RUN_AVG_LENGTH = 5` để tính giá trị trung bình trượt (`running_avg`). Chỉ so sánh ngưỡng khi đã đủ 5 mẫu:
-    - Nhiệt độ: $< 15.0^\circ\text{C}$ (quá lạnh), $> 20.0^\circ\text{C}$ (quá nóng).
-    - Độ ẩm: $< 30.0\%$ (quá khô), $> 70.0\%$ (quá ẩm).
+    - Nhiệt độ: `< 15.0°C` (quá lạnh), `> 20.0°C` (quá nóng).
+    - Độ ẩm: `< 30.0%` (quá khô), `> 70.0%` (quá ẩm).
   - **Chuyển động (Type 3) & Cửa (Type 4):** Xử lý sự kiện tức thời: cửa mở/đóng, phát hiện chuyển động.
-  - **Khói / Gas (Type 5):** So sánh ngưỡng tức thời $\ge 300\text{ ppm}$ để phát báo động ngay lập tức (không lấy trung bình vì độ trễ an toàn quan trọng hơn lọc nhiễu).
+  - **Khói / Gas (Type 5):** So sánh ngưỡng tức thời `>= 300 ppm` để phát báo động ngay lập tức (không lấy trung bình vì độ trễ an toàn quan trọng hơn lọc nhiễu).
 - **Chống spam log:** Chỉ phát sinh log khi cảm biến **chuyển trạng thái sang cảnh báo** (`STATE_ALERT`), không ghi lặp lại ở mọi phép đo khi vẫn đang trong vùng cảnh báo.
 
 ---
@@ -299,7 +301,7 @@ c:\Users\Asus\Documents\Assignment_dev_linux/
 - **Các API RESTful hỗ trợ:**
   - `GET /`: Trả về giao diện Dashboard `web/index.html`.
   - `GET /api/status`: Trả về JSON snapshot từ Shared Memory (giữ lock trong vài micro-giây rồi nhả khóa ngay).
-  - `GET /api/log?n=50`: Trả về JSON chứa $n$ dòng log mới nhất đọc trực tiếp từ `gateway.log` (hỗ trợ lọc theo `source=CONN|DATA|STOR|WEB`).
+  - `GET /api/log?n=50`: Trả về JSON chứa n dòng log mới nhất đọc trực tiếp từ `gateway.log` (hỗ trợ lọc theo `source=CONN|DATA|STOR|WEB`).
   - `GET /api/history?id=X&n=30`: Truy vấn SQLite ở chế độ chỉ đọc `SQLITE_OPEN_READONLY` lấy lịch sử đo để vẽ biểu đồ.
   - Các đường dẫn sai trả mã `404 Not Found`, phương thức khác GET trả mã `405 Method Not Allowed`.
 - **Giao diện người dùng:** Single-file HTML5/CSS/Canvas thuần túy, tự động polling mỗi 1.5 giây, hiển thị đầy đủ thẻ cảm biến theo phòng, biểu đồ đường mượt mà, bảng nhật ký sống động và sơ đồ Pipeline.
@@ -435,9 +437,9 @@ Dưới đây là kết quả kiểm thử thực nghiệm chi tiết cho từng
 - Thử nghiệm gửi dữ liệu từ node lạ (ID=99):
   `gateway.log` ghi nhận:  
   `Received sensor data with invalid sensor node ID 99`
-- Thử nghiệm vượt ngưỡng nhiệt độ ($21.4^\circ\text{C} > 20.0^\circ\text{C}$):
+- Thử nghiệm vượt ngưỡng nhiệt độ (21.4°C > 20.0°C):
   `The sensor node with 10 reports it's too hot (running avg temperature = 21.4)`
-- Thử nghiệm báo động khói ($340\text{ ppm} \ge 300\text{ ppm}$):
+- Thử nghiệm báo động khói (340 ppm >= 300 ppm):
   `The sensor node with 50 reports a smoke/gas alarm (concentration = 340 ppm)`
 
 ### Step 6: Storage Manager (Lưu Trữ SQLite & Reconnection)
@@ -522,7 +524,7 @@ Dưới đây là phần phân tích và trả lời chi tiết cho 13 câu hỏ
 ### Câu 3: PIPE_BUF liên quan thế nào tới việc nhiều bên cùng ghi vào FIFO?
 **Trả lời:**
 - Theo chuẩn **POSIX.1**, các thao tác `write()` vào đường ống (pipe hoặc FIFO) có kích thước **nhỏ hơn hoặc bằng `PIPE_BUF`** (trên Linux mặc định là **4096 bytes**) được kernel đảm bảo là **thao tác nguyên tử (atomic operation)**.
-- Khi nhiều luồng trong Main process và Web process cùng ghi đồng thời vào `logFifo`, miễn là mỗi thông điệp log kèm ký tự xuống dòng `\n` có kích thước $\le \text{PIPE\_BUF}$ (trong dự án tối đa 512 bytes), kernel Linux sẽ không bao giờ ngắt quãng hay đan xen (interleave) các byte của các thông điệp khác nhau. Điều này bảo đảm dữ liệu nhận được ở đầu đọc của `log process` luôn là các dòng hoàn chỉnh, không bị phân mảnh hay trộn lẫn.
+- Khi nhiều luồng trong Main process và Web process cùng ghi đồng thời vào `logFifo`, miễn là mỗi thông điệp log kèm ký tự xuống dòng `\n` có kích thước `<= PIPE_BUF` (trong dự án tối đa 512 bytes), kernel Linux sẽ không bao giờ ngắt quãng hay đan xen (interleave) các byte của các thông điệp khác nhau. Điều này bảo đảm dữ liệu nhận được ở đầu đọc của `log process` luôn là các dòng hoàn chỉnh, không bị phân mảnh hay trộn lẫn.
 
 ---
 
@@ -610,7 +612,7 @@ Dưới đây là phần phân tích và trả lời chi tiết cho 13 câu hỏ
   Giao thức TCP là luồng byte liên tục (*Byte-stream*), không bảo toàn ranh giới thông điệp (*Message Boundaries*). Do MTU mạng, bộ đệm kernel hoặc router trung gian, một frame 18 byte có thể bị chia thành 2 đợt nhận: lần 1 nhận 10 byte, lần 2 nhận 8 byte. Nếu giải mã ngay sau lần `recv()` đầu tiên sẽ dẫn đến lỗi đọc thiếu bộ nhớ hoặc giải mã ra giá trị rác.
 - **Cách xử lý trong dự án:**
   1. Mỗi kết nối TCP được cấp một bộ đệm tích lũy riêng `rx[RX_BUF_SIZE]` và biến đếm `rx_len`.
-  2. Sau lần `recv()` thứ nhất, `rx_len = 10`. Adapter kiểm tra thấy $10 < 18$, hàm trả về kết quả `PARSE_NEED_MORE` và đặt `*consumed = 0`.
+  2. Sau lần `recv()` thứ nhất, `rx_len = 10`. Adapter kiểm tra thấy 10 < 18, hàm trả về kết quả `PARSE_NEED_MORE` và đặt `*consumed = 0`.
   3. Bộ điều khiển Connection Manager giữ nguyên 10 byte trong bộ đệm và thoát vòng lặp, chờ sự kiện `POLLIN` tiếp theo từ `poll()`.
   4. Khi lần `recv()` thứ hai diễn ra, 8 byte mới được nạp nối tiếp vào bộ đệm: `rx_len = 18`.
   5. Adapter kiểm tra đủ 18 byte, giải mã thành công `sensor_data_t`, trả về `PARSE_OK` và `*consumed = 18`. Gói tin được bảo toàn trọn vẹn!
@@ -619,7 +621,7 @@ Dưới đây là phần phân tích và trả lời chi tiết cho 13 câu hỏ
 
 ### Câu 12: Vì sao khói/gas dùng CRC và ACK/NAK còn nhiệt độ thì không?
 **Trả lời:**
-1. **Đặc thù an toàn tính mạng (Life-Critical Data):** Cảm biến khói/khí gas liên quan trực tiếp đến an toàn cháy nổ và tính mạng con người. Một frame bị nhiễu bit trên đường truyền có thể biến giá trị $500\text{ ppm}$ (cháy nổ nguy hiểm) thành $50\text{ ppm}$ (an toàn giả tạo). Do đó, bắt buộc phải dùng mã kiểm soát lỗi mạnh **CRC-16** để đảm bảo tính toàn vẹn dữ liệu ở mức vật lý.
+1. **Đặc thù an toàn tính mạng (Life-Critical Data):** Cảm biến khói/khí gas liên quan trực tiếp đến an toàn cháy nổ và tính mạng con người. Một frame bị nhiễu bit trên đường truyền có thể biến giá trị 500 ppm (cháy nổ nguy hiểm) thành 50 ppm (an toàn giả tạo). Do đó, bắt buộc phải dùng mã kiểm soát lỗi mạnh **CRC-16** để đảm bảo tính toàn vẹn dữ liệu ở mức vật lý.
 2. **Cơ chế xác nhận đảm bảo truyền phát (Guaranteed Delivery):** Cảm biến khói cần cơ chế **ACK/NAK** kết hợp Stop-and-Wait Retry. Nếu Gateway chưa nhận được hoặc nhận hỏng (NAK), Sensor Node sẽ chủ động gửi lại tối đa 3 lần.
 3. **Cảm biến nhiệt độ là dữ liệu chuỗi thời gian định kỳ:** Nhiệt độ biến thiên chậm và được gửi đều đặn mỗi chu kỳ (ví dụ mỗi 1 giây). Nếu mất một mẫu đơn lẻ, thuật toán lọc trung bình trượt ở mẫu kế tiếp sẽ bù đắp. Bỏ qua CRC và ACK giúp giao thức TBP cực kỳ nhẹ, tiết kiệm băng thông và tối ưu năng lượng cho các vi điều khiển pin yếu.
 
@@ -627,7 +629,7 @@ Dưới đây là phần phân tích và trả lời chi tiết cho 13 câu hỏ
 
 ### Câu 13: Vì sao khói/gas so ngưỡng tức thời mà nhiệt độ dùng giá trị trung bình?
 **Trả lời:**
-1. **Yêu cầu về độ trễ phản ứng (Latency vs Safety):** Khi có sự cố rò rỉ khí gas hoặc hỏa hoạn, nồng độ khói tăng vọt trong vài giây. Cảnh báo cần phải được kích hoạt **ngay lập tức** để người dùng kịp sơ tán và hệ thống chữa cháy hoạt động. Nếu áp dụng trung bình trượt 5 mẫu, thời gian cảnh báo sẽ bị trễ từ $5 - 10$ giây – độ trễ này có thể gây hậu quả nghiêm trọng.
+1. **Yêu cầu về độ trễ phản ứng (Latency vs Safety):** Khi có sự cố rò rỉ khí gas hoặc hỏa hoạn, nồng độ khói tăng vọt trong vài giây. Cảnh báo cần phải được kích hoạt **ngay lập tức** để người dùng kịp sơ tán và hệ thống chữa cháy hoạt động. Nếu áp dụng trung bình trượt 5 mẫu, thời gian cảnh báo sẽ bị trễ từ 5 - 10 giây – độ trễ này có thể gây hậu quả nghiêm trọng.
 2. **Đặc tính vật lý & Độ nhiễu của môi trường:** Nhiệt độ và độ ẩm trong phòng biến đổi có quán tính nhiệt lớn (chậm chạp) và cảm biến giá rẻ thường xuyên chịu các gai nhiễu tức thời (nhiễu ADC do tải điện). Thuật toán **Running Average 5 mẫu** đóng vai trò bộ lọc thông thấp (*Low-Pass Filter*), loại bỏ triệt để các cảnh báo giả (*False Alarm*) do nhiễu môi trường gây ra.
 
 ---
