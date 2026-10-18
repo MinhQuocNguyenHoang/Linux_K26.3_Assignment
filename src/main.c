@@ -17,6 +17,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <pthread.h>
+#include <errno.h>
 #include "gateway.h"
 #include "log_process.h"
 #include "web_server.h"

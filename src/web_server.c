@@ -23,6 +23,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <sqlite3.h>
+#include <inttypes.h>
 #include "web_server.h"
 #include "shared_status.h"
 #include "log_process.h"

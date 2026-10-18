@@ -1,0 +1,91 @@
+1 2026-10-18 13:56:44 MAIN Gateway started (TCP base port 1234, HTTP port 8080)
+2 2026-10-18 13:56:44 STOR Connection to SQL server established.
+3 2026-10-18 13:56:44 STOR New table SensorData created.
+4 2026-10-18 13:56:44 WEB Web server started on port 8080.
+5 2026-10-18 13:56:45 CONN A sensor node with 10 has opened a new connection
+6 2026-10-18 13:56:45 CONN A sensor node with 30 has opened a new connection
+7 2026-10-18 13:56:45 CONN A sensor node with 40 has opened a new connection
+8 2026-10-18 13:56:45 DATA The sensor node with 30 detected motion
+9 2026-10-18 13:56:45 DATA The sensor node with 40 reports the door is open
+10 2026-10-18 13:56:45 CONN A sensor node with 50 has opened a new connection
+11 2026-10-18 13:56:45 DATA The sensor node with 50 reports a smoke/gas alarm (concentration = 330.0 ppm)
+12 2026-10-18 13:56:45 CONN A sensor node with 11 has opened a new connection
+13 2026-10-18 13:56:45 CONN A sensor node with 22 has opened a new connection
+14 2026-10-18 13:56:45 CONN A sensor node with 99 has opened a new connection
+15 2026-10-18 13:56:45 DATA Received sensor data with invalid sensor node ID 99
+16 2026-10-18 13:56:45 CONN A sensor node with 21 has opened a new connection
+17 2026-10-18 13:56:46 DATA The sensor node with 50 reports a smoke/gas alarm (concentration = 432.0 ppm)
+18 2026-10-18 13:56:46 DATA The sensor node with 40 reports the door is closed
+19 2026-10-18 13:56:47 DATA The sensor node with 30 detected motion
+20 2026-10-18 13:56:48 DATA The sensor node with 40 reports the door is open
+21 2026-10-18 13:56:48 DATA The sensor node with 30 detected motion
+22 2026-10-18 13:56:48 DATA Received sensor data with invalid sensor node ID 99
+23 2026-10-18 13:56:49 DATA The sensor node with 30 detected motion
+24 2026-10-18 13:56:49 CONN Received malformed frame on SGP port (bad CRC)
+25 2026-10-18 13:56:49 DATA The sensor node with 40 reports the door is closed
+26 2026-10-18 13:56:49 CONN Received malformed frame on SGP port (bad CRC)
+27 2026-10-18 13:56:49 CONN Received malformed frame on SGP port (bad CRC)
+28 2026-10-18 13:56:50 DATA The sensor node with 22 reports it's too humid (running avg humidity = 70.8)
+29 2026-10-18 13:56:50 DATA The sensor node with 30 detected motion
+30 2026-10-18 13:56:51 DATA The sensor node with 40 reports the door is open
+31 2026-10-18 13:56:51 DATA The sensor node with 30 detected motion
+32 2026-10-18 13:56:51 DATA Received sensor data with invalid sensor node ID 99
+33 2026-10-18 13:56:51 DATA The sensor node with 50 reports a smoke/gas alarm (concentration = 424.0 ppm)
+34 2026-10-18 13:56:52 DATA The sensor node with 30 detected motion
+35 2026-10-18 13:56:52 DATA The sensor node with 40 reports the door is closed
+36 2026-10-18 13:56:53 DATA The sensor node with 11 reports it's too cold (running avg temperature = 15.0)
+37 2026-10-18 13:56:54 DATA The sensor node with 30 detected motion
+38 2026-10-18 13:56:54 DATA The sensor node with 40 reports the door is open
+39 2026-10-18 13:56:54 DATA Received sensor data with invalid sensor node ID 99
+40 2026-10-18 13:56:54 CONN Received malformed frame on SGP port (bad CRC)
+41 2026-10-18 13:56:55 CONN Received malformed frame on SGP port (bad CRC)
+42 2026-10-18 13:56:55 DATA The sensor node with 30 detected motion
+43 2026-10-18 13:56:55 CONN Received malformed frame on SGP port (bad CRC)
+44 2026-10-18 13:56:55 DATA The sensor node with 40 reports the door is closed
+45 2026-10-18 13:56:56 DATA The sensor node with 30 detected motion
+46 2026-10-18 13:56:57 DATA The sensor node with 30 detected motion
+47 2026-10-18 13:56:57 DATA The sensor node with 40 reports the door is open
+48 2026-10-18 13:56:57 DATA Received sensor data with invalid sensor node ID 99
+49 2026-10-18 13:56:57 DATA The sensor node with 10 reports it's too hot (running avg temperature = 20.1)
+50 2026-10-18 13:56:57 WEB Web server received an invalid request (status code 404).
+51 2026-10-18 13:56:58 DATA The sensor node with 30 detected motion
+52 2026-10-18 13:56:58 DATA The sensor node with 40 reports the door is closed
+53 2026-10-18 13:56:59 DATA The sensor node with 11 reports it's too cold (running avg temperature = 14.6)
+54 2026-10-18 13:56:59 DATA The sensor node with 30 detected motion
+55 2026-10-18 13:56:59 DATA The sensor node with 40 reports the door is open
+56 2026-10-18 13:57:00 CONN Received malformed frame on SGP port (bad CRC)
+57 2026-10-18 13:57:00 CONN Received malformed frame on SGP port (bad CRC)
+58 2026-10-18 13:57:00 CONN Received malformed frame on SGP port (bad CRC)
+59 2026-10-18 13:57:00 DATA The sensor node with 30 detected motion
+60 2026-10-18 13:57:00 DATA Received sensor data with invalid sensor node ID 99
+61 2026-10-18 13:57:01 DATA The sensor node with 30 detected motion
+62 2026-10-18 13:57:01 DATA The sensor node with 40 reports the door is closed
+63 2026-10-18 13:57:02 DATA The sensor node with 30 detected motion
+64 2026-10-18 13:57:03 DATA The sensor node with 40 reports the door is open
+65 2026-10-18 13:57:03 DATA The sensor node with 50 reports a smoke/gas alarm (concentration = 364.0 ppm)
+66 2026-10-18 13:57:03 DATA Received sensor data with invalid sensor node ID 99
+67 2026-10-18 13:57:03 DATA The sensor node with 30 detected motion
+68 2026-10-18 13:57:04 DATA The sensor node with 30 detected motion
+69 2026-10-18 13:57:05 DATA The sensor node with 40 reports the door is closed
+70 2026-10-18 13:57:05 CONN Received malformed frame on SGP port (bad CRC)
+71 2026-10-18 13:57:05 CONN Received malformed frame on SGP port (bad CRC)
+72 2026-10-18 13:57:05 CONN Received malformed frame on SGP port (bad CRC)
+73 2026-10-18 13:57:06 DATA The sensor node with 30 detected motion
+74 2026-10-18 13:57:06 DATA Received sensor data with invalid sensor node ID 99
+75 2026-10-18 13:57:06 DATA The sensor node with 40 reports the door is open
+76 2026-10-18 13:57:07 DATA The sensor node with 30 detected motion
+77 2026-10-18 13:57:08 DATA The sensor node with 40 reports the door is closed
+78 2026-10-18 13:57:08 DATA The sensor node with 30 detected motion
+79 2026-10-18 13:57:09 DATA The sensor node with 30 detected motion
+80 2026-10-18 13:57:09 DATA The sensor node with 40 reports the door is open
+81 2026-10-18 13:57:09 DATA Received sensor data with invalid sensor node ID 99
+82 2026-10-18 13:57:09 DATA The sensor node with 50 reports a smoke/gas alarm (concentration = 414.0 ppm)
+83 2026-10-18 13:57:10 CONN The sensor node with 30 has closed the connection
+84 2026-10-18 13:57:10 CONN The sensor node with 40 has closed the connection
+85 2026-10-18 13:57:10 CONN The sensor node with 50 has closed the connection
+86 2026-10-18 13:57:10 CONN The sensor node with 11 has closed the connection
+87 2026-10-18 13:57:10 CONN The sensor node with 10 has closed the connection
+88 2026-10-18 13:57:10 CONN The sensor node with 21 has closed the connection
+89 2026-10-18 13:57:10 CONN The sensor node with 22 has closed the connection
+90 2026-10-18 13:57:10 CONN The sensor node with 99 has closed the connection
+91 2026-10-18 13:57:11 MAIN Gateway shutting down (signal received)

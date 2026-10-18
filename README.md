@@ -21,9 +21,7 @@
    - 4.8 POSIX Shared Memory & Robust Process-Shared Mutex
 5. [Hướng Dẫn Biên Dịch & Chạy Chương Trình](#5-hướng-dẫn-biên-dịch--chạy-chương-trình)
 6. [Bằng Chứng Kiểm Chứng Thực Nghiệm (Step 0 – Step 12)](#6-bằng-chứng-kiểm-chứng-thực-nghiệm-step-0--step-12)
-7. [Giải Trình Toàn Diện 13 Câu Hỏi Bảo Vệ Chuyên Sâu](#7-giải-trình-toàn-diện-13-câu-hỏi-bảo-vệ-chuyên-sâu)
-8. [Kịch Bản Thuyết Trình & Quay Video Demo](#8-kịch-bản-thuyết-trình--quay-video-demo)
-
+7. [13 Câu Hỏi Bảo Vệ Chuyên Sâu](#7-13-câu-hỏi-bảo-vệ-chuyên-sâu)
 ---
 
 ## 1. Giới Thiệu Tổng Quan Dự Án
