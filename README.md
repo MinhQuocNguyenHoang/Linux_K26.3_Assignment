@@ -1,4 +1,4 @@
-# BÀI TẬP GIỮA KỲ & CUỐI KỲ: SENSOR GATEWAY – SMART HOME MONITORING SYSTEM
+# BÀI TẬP GIỮA KỲ: SENSOR GATEWAY – SMART HOME MONITORING SYSTEM
 **Môn học:** Lập trình Linux Nhúng (Embedded Linux Programming)  
 **Đơn vị đào tạo:** DevLinux Academy  
 **Tác giả thực hiện:** Sinh viên năm 4 chuyên ngành Kỹ thuật Máy tính / Hệ thống Nhúng  
