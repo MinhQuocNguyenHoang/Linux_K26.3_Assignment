@@ -631,44 +631,5 @@ Dưới đây là phần phân tích và trả lời chi tiết cho 13 câu hỏ
 **Trả lời:**
 1. **Yêu cầu về độ trễ phản ứng (Latency vs Safety):** Khi có sự cố rò rỉ khí gas hoặc hỏa hoạn, nồng độ khói tăng vọt trong vài giây. Cảnh báo cần phải được kích hoạt **ngay lập tức** để người dùng kịp sơ tán và hệ thống chữa cháy hoạt động. Nếu áp dụng trung bình trượt 5 mẫu, thời gian cảnh báo sẽ bị trễ từ 5 - 10 giây – độ trễ này có thể gây hậu quả nghiêm trọng.
 2. **Đặc tính vật lý & Độ nhiễu của môi trường:** Nhiệt độ và độ ẩm trong phòng biến đổi có quán tính nhiệt lớn (chậm chạp) và cảm biến giá rẻ thường xuyên chịu các gai nhiễu tức thời (nhiễu ADC do tải điện). Thuật toán **Running Average 5 mẫu** đóng vai trò bộ lọc thông thấp (*Low-Pass Filter*), loại bỏ triệt để các cảnh báo giả (*False Alarm*) do nhiễu môi trường gây ra.
-
----
-
-## 8. Kịch Bản Thuyết Trình & Quay Video Demo
-
-Dành cho sinh viên năm 4 khi chuẩn bị video thuyết trình bài tập lớn (thời lượng khuyến nghị: 5 – 7 phút):
-
-### Phân Bổ Thời Lượng Video
-
-| Phân đoạn | Thời lượng | Nội dung thuyết trình | Chi tiết trình bày |
-| :--- | :--- | :--- | :--- |
-| **Phần 1** | 00:00 - 00:45 | Giới thiệu đề tài & mục tiêu | Chào hỏi, giới thiệu bản thân, bài toán Sensor Gateway, mục tiêu 5 chức năng cốt lõi. |
-| **Phần 2** | 00:45 - 02:00 | Kiến trúc 3 Process & 3 Thread | Trình chiếu sơ đồ khối, phân tích sbuffer 2 cờ đọc, giao tiếp FIFO nguyên tử, Shared Memory Robust Mutex. |
-| **Phần 3** | 02:00 - 04:00 | Demo thực nghiệm & Web Dashboard | Biên dịch, chạy Gateway và 5 Sensor Node, tương tác trực tiếp trên giao diện Web Dashboard (biểu đồ, log, pipeline). |
-| **Phần 4** | 04:00 - 05:15 | Kiểm chứng Valgrind & Xử lý lỗi | Demo crash Web process (`kill -9`) và phục hồi qua robust mutex; trình chiếu kết quả Valgrind 0 leak, Helgrind 0 race. |
-| **Phần 5** | 05:15 - 06:00 | Kết luận & Bài học kinh nghiệm | Tóm tắt kết quả đạt được, cảm ơn thầy cô và sẵn sàng phản biện 13 câu hỏi bảo vệ. |
-
-### Kịch Bản Lời Thoại Chi Tiết
-1. **Mở đầu (0:00 - 0:45):**
-   - "Xin chào thầy cô và các bạn. Em là [Họ và tên], sinh viên năm 4. Hôm nay em xin trình bày sản phẩm đồ án Lập trình Linux Nhúng: Hệ thống Sensor Gateway giám sát cảm biến phòng Smart Home..."
-2. **Kiến trúc hệ thống (0:45 - 2:00):**
-   - Mở sơ đồ khối kiến trúc trong README.
-   - Giải thích lý do lựa chọn mô hình 3 Tiến trình (Main, Log, Web) và 3 Luồng trong Main process.
-   - Nêu bật cơ chế đồng bộ `sbuffer` hai cờ đọc, giao tiếp FIFO nguyên tử và Shared Memory có Robust Mutex.
-3. **Demo Thực nghiệm (2:00 - 4:00):**
-   - Chạy lệnh `make test` để minh chứng toàn bộ Unit Test (CRC-16, Protocol Adapter, sbuffer đa luồng) vượt qua 100%.
-   - Chạy lệnh `./server 1234 8080`.
-   - Chạy đồng thời các sensor node: Nhiệt độ, Độ ẩm (`--fragment`), Cửa, Chuyển động, và Khói (`--corrupt`).
-   - Mở trình duyệt web `http://127.0.0.1:8080`, chỉ rõ:
-     - Pipeline metric cập nhật thời gian thực.
-     - Thẻ cảm biến chuyển màu khi có cảnh báo Quá nóng / Quá lạnh / Báo động khói.
-     - Biểu đồ lịch sử được truy vấn trực tiếp từ SQLite (chế độ chỉ đọc).
-     - Log viewer lọc theo từng nguồn `CONN`, `DATA`, `STOR`, `WEB`.
-4. **Kiểm chứng chuyên sâu (4:00 - 5:15):**
-   - Mở terminal chạy `killall -9 web_process`: chỉ ra Gateway vẫn chạy bình thường, Robust Mutex tự phục hồi qua `EOWNERDEAD` và không có zombie process.
-   - Trình chiếu kết quả chạy `valgrind --leak-check=full` và `helgrind` khẳng định **0 memory leaks, 0 data races**.
-5. **Tổng kết (5:15 - 6:00):**
-   - Tóm tắt kết quả đạt được, cảm ơn thầy cô đã theo dõi và sẵn sàng trả lời các câu hỏi phản biện.
-
 ---
 
